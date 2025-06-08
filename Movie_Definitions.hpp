@@ -6,8 +6,8 @@
 
 namespace IndiceConfig {
     const int ID_OFFSET = 7917518; //first id
-    const size_t TAMANHO_INDICE = 9195182 - ID_OFFSET + 1; // Resultado: 1,277,665
-    const size_t INDICE_NULO = -1; // Representa um slot vazio no índice
+    const size_t INDEX_SIZE = (9195182 - ID_OFFSET)/2 + 1; //last id
+    const size_t NULL_INDEX = -1; // Representa um slot vazio no índice
 }
 
 //Masks for each genre
