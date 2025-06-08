@@ -1,0 +1,14 @@
+tconst	titleType	primaryTitle	originalTitle	isAdult	startYear	endYear	runtimeMinutes	genres
+tt7917518	short	The Battle II	The Battle II	0	2008	\N	\N	Action,Short
+tt7917520	tvEpisode	Miguel jura amor eterno a Nevis, pero la vida les pondrá pruebas muy duras	Miguel jura amor eterno a Nevis, pero la vida les pondrá pruebas muy duras	0	2017	\N	\N	Drama
+tt7917522	tvEpisode	El amor de Miguel y Nevis es más fuerte que quienes desean separarlos	El amor de Miguel y Nevis es más fuerte que quienes desean separarlos	0	2017	\N	\N	Drama
+tt7917526	short	The Pretentious French Film	The Pretentious French Film	0	2017	\N	3	Short
+tt7917528	tvEpisode	Una noticia inesperada podría cambiar los planes de Miguel y Nevis	Una noticia inesperada podría cambiar los planes de Miguel y Nevis	0	2017	\N	\N	Drama
+tt7917530	video	Aftermath	Aftermath	0	2016	\N	5	Animation,Drama,Music
+tt7917532	short	Ironheart	Ironheart	0	2018	\N	12	Drama,History,Short
+tt7917534	tvEpisode	Episode #2.7	Episode #2.7	0	2017	\N	\N	Comedy
+tt7917536	tvEpisode	Qué bendición, en el vientre de Nevis crece el fruto de su amor con Miguel	Qué bendición, en el vientre de Nevis crece el fruto de su amor con Miguel	0	2017	\N	\N	Drama
+tt7917538	tvEpisode	Nace Kaleth Morales mientras Miguel se define entre cantante o cocinero	Nace Kaleth Morales mientras Miguel se define entre cantante o cocinero	0	2017	\N	\N	Drama
+tt7917540	tvEpisode	Episode #2.8	Episode #2.8	0	2017	\N	\N	Comedy
+tt9194458	tvEpisode	Episode #1.127	Episode #1.127	0	2005	\N	\N	Action,Drama,Fantasy
+tt9194650	tvEpisode	Episode #1.104	Episode #1.104	0	1993	\N	\N	\N
