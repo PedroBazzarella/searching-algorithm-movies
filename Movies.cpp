@@ -1,5 +1,5 @@
 #include "Movies.hpp"
-#include "Movie_Definitions.hpp"
+#include "MovieDefinitions.hpp"
 #include <sstream>
 #include <string>
 #include <vector>
@@ -68,7 +68,6 @@ std::string Movies::getTitleTypeAsString() const{
 
 std::string Movies::toString() const{
     std::ostringstream movieData;
-
 
     movieData << "tt" << id << " " << getTitleTypeAsString() << " " << originalTitle << " " << startYear << " "<< endYear << " " << getGenresAsString();
 

@@ -10,13 +10,12 @@
                 "-Wall",
                 "-Wextra",
                 "-g3",
-                // A linha abaixo é a mais importante.
-                // Ela pega todos os arquivos .cpp na pasta do seu projeto.
+                
                 "Movies.cpp",
 				"MovieDataBase.cpp",
 				"main.cpp",
                 "-o",
-                // Isso vai salvar o .exe na sua pasta de output, como no seu comando.
+                
                 "${workspaceFolder}\\output\\main.exe"
             ],
             "options": {
