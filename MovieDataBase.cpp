@@ -6,7 +6,10 @@
 #include <vector>
 #include <chrono>
 
-MovieDataBase::MovieDataBase(){};
+MovieDataBase::MovieDataBase(){
+    //initializes hash table with predefined size and fills all slots with null
+    movieIndexTable.resize(IndexConfig::INDEX_SIZE, IndexConfig::NULL_INDEX);
+};
 
 Movies MovieDataBase::createMovie(std::string id_string, std::string titleType_string, std::string primaryTitle_string, std::string originalTitle_string, std::string isAdult_string, std::string startYear_string, std::string endYear_string, std::string runtimeMinutes_string, std::string genres_string){
 
@@ -117,8 +120,15 @@ void MovieDataBase::loadMoviesFromTXT(const std::string & filename){
         Movies movie = createMovie(id_string, titleType_string, primaryTitle_string, originalTitle_string, isAdult_string, startYear_string, endYear_string, runtimeMinutes_string, genres_string);
 
         allMovies.push_back(movie);
-
+        
         // HASH -----------------------------------------
+
+        size_t storageIndexInAllMovies = allMovies.size() - 1;
+
+        //calculates perfect hash index
+        size_t hashIndex = (movie.getID() - IndexConfig::ID_OFFSET)/2;
+        movieIndexTable[hashIndex] = storageIndexInAllMovies; 
+        
         std::cout << movie.toString() << std::endl;
         /*
         LINHA 
@@ -136,4 +146,20 @@ void MovieDataBase::loadMoviesFromTXT(const std::string & filename){
     std::cout << "FINISHED LOADING DATABASE: " << duration_ms.count() << " milliseconds." << std::endl;
     std::cout << "-----------------------------------------------" << std::endl;
 
+}
+
+Movies * MovieDataBase::findMovieByID(int id){
+    size_t hashIndex = (id - IndexConfig::ID_OFFSET)/2;
+
+    if (hashIndex > allMovies.size() - 1){
+        return nullptr; //id out of our range
+    }
+
+    size_t storageIndexInAllMovies = movieIndexTable[hashIndex];
+
+    if (storageIndexInAllMovies != IndexConfig::NULL_INDEX){
+        return &allMovies[storageIndexInAllMovies]; //returns movie obj
+    }
+
+    return nullptr;
 }

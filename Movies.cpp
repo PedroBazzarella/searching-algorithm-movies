@@ -16,6 +16,9 @@ Movies::Movies(int id, unsigned short titleType_mask, std::string primaryTitle, 
     this->genres_mask = genres_mask;
 }
 
+int Movies::getID(){
+    return id;
+}
 
 std::string Movies::getGenresAsString() const{
     std::vector <std::string> genresList;
