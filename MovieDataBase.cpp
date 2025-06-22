@@ -180,7 +180,7 @@ void MovieDataBase::loadMoviesFromTXT(const std::string &filename)
         {
             for (unsigned i = 0; i < IndexConfig::NUM_GENRES; i++)
             {                                        // checking all genres
-                unsigned int eachGenreMask = 1 << i; // genrerates mask for each genre
+                unsigned int eachGenreMask = 1 << i; // generates mask for each genre
 
                 if ((eachGenreMask & genreMask) != 0)
                 {
@@ -229,5 +229,5 @@ const std::vector<size_t> &MovieDataBase::getGenreList(unsigned int genre_mask)
 const std::vector <size_t> & MovieDataBase::getTittleTypeList(unsigned short tittleType_mask){
     size_t whichType = getBitPosition(tittleType_mask);
 
-    return tittleTypeIndex.at(whichType); // returns list of asked genre
+    return tittleTypeIndex.at(whichType); // returns list of asked type
 }
