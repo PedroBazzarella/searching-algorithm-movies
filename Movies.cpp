@@ -20,6 +20,14 @@ int Movies::getID(){
     return id;
 }
 
+unsigned short Movies::getTitleTypeMask(){
+    return titleType_mask;
+}
+
+unsigned short Movies::getGenresMask(){
+    return genres_mask;
+}
+
 std::string Movies::getGenresAsString() const{
     std::vector <std::string> genresList;
 

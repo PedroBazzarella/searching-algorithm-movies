@@ -5,30 +5,39 @@
 #include <sstream>
 #include <vector>
 #include <chrono>
+#include <cmath>
 
-MovieDataBase::MovieDataBase(){
-    //initializes hash table with predefined size and fills all slots with null
+MovieDataBase::MovieDataBase()
+{
+    // initializes hash table with predefined size and fills all slots with null
     movieIndexTable.resize(IndexConfig::INDEX_SIZE, IndexConfig::NULL_INDEX);
+
+    // creates 27 empty lists, one for each genre
+    genreIndex.resize(IndexConfig::NUM_GENRES);
+
+    // creates 10 empty lists, one for each tittle type
+    tittleTypeIndex.resize(IndexConfig::NUM_TITTLE_TYPES);
 };
 
-Movies MovieDataBase::createMovie(std::string id_string, std::string titleType_string, std::string primaryTitle_string, std::string originalTitle_string, std::string isAdult_string, std::string startYear_string, std::string endYear_string, std::string runtimeMinutes_string, std::string genres_string){
+Movies MovieDataBase::createMovie(std::string id_string, std::string titleType_string, std::string primaryTitle_string, std::string originalTitle_string, std::string isAdult_string, std::string startYear_string, std::string endYear_string, std::string runtimeMinutes_string, std::string genres_string)
+{
 
     // TYPE CONVERSIONS ----------------------------------------
 
-    //convert id_string to int
-    std::string numID = id_string.substr(2); //tt00000 -> id begins at third index (2)
-    int id = std::stoi(numID); 
+    // convert id_string to int
+    std::string numID = id_string.substr(2); // tt00000 -> id begins at third index (2)
+    int id = std::stoi(numID);
 
-    //convert isAsult_string to bool
-    bool isAdult = std::stoi(isAdult_string); 
+    // convert isAsult_string to bool
+    bool isAdult = std::stoi(isAdult_string);
 
-    //convert startYear_string to int if the value is valid, else default to 0
+    // convert startYear_string to int if the value is valid, else default to 0
     int startYear = (startYear_string == "\\N") ? 0 : std::stoi(startYear_string);
 
-    //convert endYear_string to int if the value is valid, else default to 0
+    // convert endYear_string to int if the value is valid, else default to 0
     int endYear = (endYear_string == "\\N") ? 0 : std::stoi(endYear_string);
 
-    //convert runtimeMinutes_string to int if the value is valid, else default to 0
+    // convert runtimeMinutes_string to int if the value is valid, else default to 0
     int runtimeMinutes = (runtimeMinutes_string == "\\N") ? 0 : std::stoi(runtimeMinutes_string);
 
     // END TYPE CONVERSIONS ------------------------------------
@@ -37,31 +46,43 @@ Movies MovieDataBase::createMovie(std::string id_string, std::string titleType_s
 
     unsigned short titleType_mask = 0;
 
-    if (stringToTitleTypeMask.count(titleType_string)) //searches on the titleTypesMap for the key/type 
-        titleType_mask = stringToTitleTypeMask.at(titleType_string); //returns value/titleType mask
+    if (stringToTitleTypeMask.count(titleType_string))               // searches on the titleTypesMap for the key/type
+        titleType_mask = stringToTitleTypeMask.at(titleType_string); // returns value/titleType mask
 
     unsigned int genre_mask = 0;
 
     std::stringstream genreNames(genres_string); // creates stream for genres_string
     std::string singleGenre;
 
-    while (std::getline(genreNames, singleGenre, ',')){ //gets all genres
-        if(stringToGenreMask.count(singleGenre)){ //searches key/genre name
-            genre_mask |= stringToGenreMask.at(singleGenre); //returns value/genre mask
+    while (std::getline(genreNames, singleGenre, ','))
+    { // gets all genres
+        if (stringToGenreMask.count(singleGenre))
+        {                                                    // searches key/genre name
+            genre_mask |= stringToGenreMask.at(singleGenre); // returns value/genre mask
         }
     }
-    
+
     return Movies(id, titleType_mask, primaryTitle_string, originalTitle_string, isAdult, startYear, endYear, runtimeMinutes, genre_mask);
-    
 }
 
+size_t MovieDataBase::getBitPosition(unsigned int genreORtype_mask)
+{
+    if (genreORtype_mask == 0)
+        return 0;
 
-void MovieDataBase::loadMoviesFromTXT(const std::string & filename){
+    unsigned int pos = log2(genreORtype_mask);
+
+    return static_cast<size_t>(pos);
+}
+
+void MovieDataBase::loadMoviesFromTXT(const std::string &filename)
+{
     auto start_time = std::chrono::high_resolution_clock::now();
 
     std::ifstream inputFile(filename); // tries to open file
 
-    if (inputFile.is_open() == false){
+    if (inputFile.is_open() == false)
+    {
         std::cerr << "Error: Could not open file " << filename << std::endl;
         return;
     }
@@ -70,48 +91,48 @@ void MovieDataBase::loadMoviesFromTXT(const std::string & filename){
 
     std::getline(inputFile, line); // skips header line
 
-    while (std::getline(inputFile, line)){
+    while (std::getline(inputFile, line))
+    {
         std::stringstream stringLine(line); // creates stream from line
-        std::string field; 
+        std::string field;
 
         // GETTING DATA FROM FILE ----------------------------------
-        //extracting fields as string, values separated by TAB 
+        // extracting fields as string, values separated by TAB
 
-        //Id tt0000000
-        std::getline(stringLine, field, '\t'); 
+        // Id tt0000000
+        std::getline(stringLine, field, '\t');
         std::string id_string = field;
 
-        //titleType
-        std::getline(stringLine, field, '\t'); 
+        // titleType
+        std::getline(stringLine, field, '\t');
         std::string titleType_string = field;
 
-        //primaryTitle
-        std::getline(stringLine, field, '\t'); 
+        // primaryTitle
+        std::getline(stringLine, field, '\t');
         std::string primaryTitle_string = field;
 
-        //originalTitle
-        std::getline(stringLine, field, '\t'); 
+        // originalTitle
+        std::getline(stringLine, field, '\t');
         std::string originalTitle_string = field;
 
-        //isAdult
-        std::getline(stringLine, field, '\t'); 
+        // isAdult
+        std::getline(stringLine, field, '\t');
         std::string isAdult_string = field;
 
-        //startYear
-        std::getline(stringLine, field, '\t'); 
+        // startYear
+        std::getline(stringLine, field, '\t');
         std::string startYear_string = field;
 
-        //endYear
-        std::getline(stringLine, field, '\t'); 
+        // endYear
+        std::getline(stringLine, field, '\t');
         std::string endYear_string = field;
 
-        //runtimeMinutes
-        std::getline(stringLine, field, '\t'); 
+        // runtimeMinutes
+        std::getline(stringLine, field, '\t');
         std::string runtimeMinutes_string = field;
 
-
-        //genres
-        std::getline(stringLine, field, '\t'); 
+        // genres
+        std::getline(stringLine, field, '\t');
         std::string genres_string = field;
 
         // END GETTING DATA FROM FILE ------------------------------
@@ -120,22 +141,54 @@ void MovieDataBase::loadMoviesFromTXT(const std::string & filename){
         Movies movie = createMovie(id_string, titleType_string, primaryTitle_string, originalTitle_string, isAdult_string, startYear_string, endYear_string, runtimeMinutes_string, genres_string);
 
         allMovies.push_back(movie);
-        
+
         // HASH -----------------------------------------
 
         size_t storageIndexInAllMovies = allMovies.size() - 1;
 
-        //calculates perfect hash index
-        size_t hashIndex = (movie.getID() - IndexConfig::ID_OFFSET)/2;
-        movieIndexTable[hashIndex] = storageIndexInAllMovies; 
-        
+        // calculates perfect hash index
+        size_t hashIndex = (movie.getID() - IndexConfig::ID_OFFSET) / 2;
+
+        movieIndexTable[hashIndex] = storageIndexInAllMovies;
+
         std::cout << movie.toString() << std::endl;
         /*
-        LINHA 
+        LINHA
         DE
         TESTE
         ACIMA
         */
+
+        // END HASH -----------------------------------------
+
+        // SUBLISTS -----------------------------------------
+        unsigned short tittleTypeMask = movie.getTitleTypeMask();
+
+        if (tittleTypeMask > 0)
+        {
+            size_t whichTypeIndex = getBitPosition(tittleTypeMask);
+    
+            if (whichTypeIndex < tittleTypeIndex.size())
+            {
+                tittleTypeIndex[whichTypeIndex].push_back(movie.getID()); // puts the movie id in the list of its tittleType
+            }
+        }
+
+        unsigned int genreMask = movie.getGenresMask();
+
+        if (genreMask > 0)
+        {
+            for (unsigned i = 0; i < IndexConfig::NUM_GENRES; i++)
+            {                                        // checking all genres
+                unsigned int eachGenreMask = 1 << i; // genrerates mask for each genre
+
+                if ((eachGenreMask & genreMask) != 0)
+                {
+                    genreIndex[i].push_back(movie.getID()); // puts the movie id in the list of its genre
+                }
+            }
+        }
+        // END SUBLISTS -------------------------------------
     }
 
     auto end_time = std::chrono::high_resolution_clock::now();
@@ -145,21 +198,36 @@ void MovieDataBase::loadMoviesFromTXT(const std::string & filename){
     std::cout << "-----------------------------------------------" << std::endl;
     std::cout << "FINISHED LOADING DATABASE: " << duration_ms.count() << " milliseconds." << std::endl;
     std::cout << "-----------------------------------------------" << std::endl;
-
 }
 
-Movies * MovieDataBase::findMovieByID(int id){
-    size_t hashIndex = (id - IndexConfig::ID_OFFSET)/2;
+Movies *MovieDataBase::findMovieByID(int id)
+{
+    size_t hashIndex = (id - IndexConfig::ID_OFFSET) / 2;
 
-    if (hashIndex > allMovies.size() - 1){
-        return nullptr; //id out of our range
+    if (hashIndex > movieIndexTable.size() - 1)
+    {
+        return nullptr; // id out of our range
     }
 
     size_t storageIndexInAllMovies = movieIndexTable[hashIndex];
 
-    if (storageIndexInAllMovies != IndexConfig::NULL_INDEX){
-        return &allMovies[storageIndexInAllMovies]; //returns movie obj
+    if (storageIndexInAllMovies != IndexConfig::NULL_INDEX)
+    {
+        return &allMovies[storageIndexInAllMovies]; // returns movie obj
     }
 
     return nullptr;
+}
+
+const std::vector<size_t> &MovieDataBase::getGenreList(unsigned int genre_mask)
+{
+    size_t whichGenre = getBitPosition(genre_mask);
+
+    return genreIndex.at(whichGenre); // returns list of asked genre
+}
+
+const std::vector <size_t> & MovieDataBase::getTittleTypeList(unsigned short tittleType_mask){
+    size_t whichType = getBitPosition(tittleType_mask);
+
+    return tittleTypeIndex.at(whichType); // returns list of asked genre
 }

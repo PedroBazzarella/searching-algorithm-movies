@@ -8,6 +8,8 @@ namespace IndexConfig {
     const int ID_OFFSET = 7917518; //first id
     const size_t INDEX_SIZE = (9195182 - ID_OFFSET)/2 + 1; //last id
     const size_t NULL_INDEX = -1; // represents an empty slot in the index
+    const size_t NUM_GENRES = 27;
+    const size_t NUM_TITTLE_TYPES = 10;
 }
 
 //Masks for each genre
