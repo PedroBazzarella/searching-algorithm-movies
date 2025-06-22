@@ -1,5 +1,6 @@
 #include "MovieDataBase.hpp"
 #include <iostream>
+#include <chrono>
 
 int main(){
     Movies movie(7917518, 2, "The Battle II", "The Battle II", false, 2008, 0, 0, 2097153);
@@ -9,7 +10,7 @@ int main(){
     std::cout << data << std::endl;
 
     MovieDataBase database;
-    std::string fileName = "C:\\Users\\Waleska\\Documents\\Faculdade\\ProjetoI_TBO_2025\\searching-algorithm-movies\\testFile.txt";
+    std::string fileName = "testFile.txt";
 
     
     std::cout << ">>> Loading movies from file: " << fileName << "..." << std::endl;
