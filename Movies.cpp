@@ -1,6 +1,7 @@
 #include "Movies.hpp"
 #include "MovieDefinitions.hpp"
 #include <sstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -29,51 +30,27 @@ unsigned short Movies::getGenresMask(){
 }
 
 std::string Movies::getGenresAsString() const{
-    std::vector <std::string> genresList;
-
-    for (const auto & pair : genresMap){ // pair stores key + value for each genre in genresMap
-        unsigned int thisGenreMask = pair.first; // gets genre key/ activated bit
-        std::string const & genreName = pair.second; // gets genre value/name
-
-        if ((this->genres_mask & thisGenreMask) != 0){
-            genresList.push_back (genreName); //stores genre name 
+    std::string movieGenres = "";
+    
+    for(int i = 0; i < GenresNameList.size(); ++i){
+        if((1u << i & genres_mask) != 0){
+            if(movieGenres != "") movieGenres.append(",");
+            movieGenres.append(GenresNameList[i]);
         }
     }
-
-    if (genresList.empty()){ 
-        genresList.push_back("N/A");
-    }
-
-    std::string movieGenres = "";
-
-    for (unsigned i = 0; i < genresList.size(); i++){ 
-        movieGenres += genresList[i];
-
-        if (i < genresList.size() - 1)
-            movieGenres += ", ";
-    }
-    
-    return movieGenres; 
+    if (movieGenres.empty()) return "N/A";
+    return movieGenres;
 }
 
 
 std::string Movies::getTitleTypeAsString() const{
-    std::string movieType = "";
-
-    for(const auto & pair : titleTypesMap){ // pair stores key + value for each title type in titleTypesMap
-        unsigned short titleTypeMask = pair.first;
-        std::string const & titleTypeName = pair.second;
-        
-        if (this->titleType_mask == titleTypeMask){
-            movieType = titleTypeName;
-            break;
+    for(int i = 0; i < 31; ++i){
+        if((1 << i) & genres_mask != 0){
+            return TypesNameList[i];
         }
     }
-
-    if (movieType == "")
-        movieType = "N/A";
-
-    return movieType;
+    
+    return "N/A";
 }
 
 

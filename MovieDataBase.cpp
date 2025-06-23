@@ -44,22 +44,15 @@ Movies MovieDataBase::createMovie(std::string id_string, std::string titleType_s
 
     // MASKS CREATION -------------------------------------------
 
-    unsigned short titleType_mask = 0;
-
-    if (stringToTitleTypeMask.count(titleType_string))               // searches on the titleTypesMap for the key/type
-        titleType_mask = stringToTitleTypeMask.at(titleType_string); // returns value/titleType mask
+    unsigned short titleType_mask = typeFromString(titleType_string);
 
     unsigned int genre_mask = 0;
 
     std::stringstream genreNames(genres_string); // creates stream for genres_string
     std::string singleGenre;
 
-    while (std::getline(genreNames, singleGenre, ','))
-    { // gets all genres
-        if (stringToGenreMask.count(singleGenre))
-        {                                                    // searches key/genre name
-            genre_mask |= stringToGenreMask.at(singleGenre); // returns value/genre mask
-        }
+    while (std::getline(genreNames, singleGenre, ',')){ // gets all genres from stream
+        genre_mask |= genreFromString(singleGenre); // add genre bitmask to movie
     }
 
     return Movies(id, titleType_mask, primaryTitle_string, originalTitle_string, isAdult, startYear, endYear, runtimeMinutes, genre_mask);

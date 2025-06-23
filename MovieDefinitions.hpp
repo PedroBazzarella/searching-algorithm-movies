@@ -1,7 +1,8 @@
 #pragma once
 
-#include <map>
-#include <cstddef> 
+#include <cstddef>
+#include <string>
+#include <vector>
 
 
 namespace IndexConfig {
@@ -12,137 +13,106 @@ namespace IndexConfig {
     const size_t NUM_TITTLE_TYPES = 10;
 }
 
-//Masks for each genre
-namespace Genres
-{
-    const unsigned int action        = 1 << 0;   // 1
-    const unsigned int adult         = 1 << 1;   // 2
-    const unsigned int adventure     = 1 << 2;   // 3
-    const unsigned int animation     = 1 << 3;   // 4
-    const unsigned int biography     = 1 << 4;   // 5
-    const unsigned int comedy        = 1 << 5;   // 6
-    const unsigned int crime         = 1 << 6;   // 7
-    const unsigned int documentary   = 1 << 7;   // 8
-    const unsigned int drama         = 1 << 8;   // 9
-    const unsigned int family        = 1 << 9;   // 10
-    const unsigned int fantasy       = 1 << 10;  // 11
-    const unsigned int game_Show     = 1 << 11;  // 12
-    const unsigned int history       = 1 << 12;  // 13
-    const unsigned int horror        = 1 << 13;  // 14
-    const unsigned int music         = 1 << 14;  // 15
-    const unsigned int musical       = 1 << 15;  // 16
-    const unsigned int mystery       = 1 << 16;  // 17
-    const unsigned int news          = 1 << 17;  // 18
-    const unsigned int reality_TV    = 1 << 18;  // 19
-    const unsigned int romance       = 1 << 19;  // 20
-    const unsigned int sci_Fi        = 1 << 20;  // 21
-    const unsigned int _short        = 1 << 21;  // 22
-    const unsigned int sport         = 1 << 22;  // 23
-    const unsigned int talk_Show     = 1 << 23;  // 24
-    const unsigned int thriller      = 1 << 24;  // 25
-    const unsigned int war           = 1 << 25;  // 26
-    const unsigned int western       = 1 << 26;  // 27
+//Movie Genres
+/*
+    Define a list of all movie genres
+*/
+#define GENRES_LIST          \
+    X(action,      "Action")      \
+    X(adult,       "Adult")       \
+    X(adventure,   "Adventure")   \
+    X(animation,   "Animation")   \
+    X(biography,   "Biography")   \
+    X(comedy,      "Comedy")      \
+    X(crime,       "Crime")       \
+    X(documentary, "Documentary") \
+    X(drama,       "Drama")       \
+    X(family,      "Family")      \
+    X(fantasy,     "Fantasy")     \
+    X(game_Show,   "Game-Show")   \
+    X(history,     "History")     \
+    X(horror,      "Horror")      \
+    X(music,       "Music")       \
+    X(musical,     "Musical")     \
+    X(mystery,     "Mystery")     \
+    X(news,        "News")        \
+    X(reality_TV,  "Reality-TV")  \
+    X(romance,     "Romance")     \
+    X(sci_Fi,      "Sci-Fi")      \
+    X(_short,      "Short")       \
+    X(sport,       "Sport")       \
+    X(talk_Show,   "Talk-Show")   \
+    X(thriller,    "Thriller")    \
+    X(war,         "War")         \
+    X(western,     "Western")
+
+/*
+    Generate namespace from GENRES_LIST
+*/
+// name -> bitmask
+namespace Genres {
+#define X(name, label) constexpr unsigned int name = 1u << __COUNTER__;
+    GENRES_LIST
+#undef X
 }
 
-// Maps for Genres
-const std::map<unsigned int, std::string> genresMap = {
-    {Genres::action, "Action"},
-    {Genres::adult, "Adult"},
-    {Genres::adventure, "Adventure"},
-    {Genres::animation, "Animation"},
-    {Genres::biography, "Biography"},
-    {Genres::comedy, "Comedy"},
-    {Genres::crime, "Crime"},
-    {Genres::documentary, "Documentary"}, 
-    {Genres::drama, "Drama"},
-    {Genres::family, "Family"},
-    {Genres::fantasy, "Fantasy"},
-    {Genres::game_Show, "Game-Show"},
-    {Genres::history, "History"},
-    {Genres::horror, "Horror"},
-    {Genres::music, "Music"},
-    {Genres::musical, "Musical"},
-    {Genres::mystery, "Mystery"},
-    {Genres::news, "News"},
-    {Genres::reality_TV, "Reality-TV"},
-    {Genres::romance, "Romance"},
-    {Genres::sci_Fi, "Sci-Fi"},
-    {Genres::_short, "Short"},
-    {Genres::sport, "Sport"},
-    {Genres::talk_Show, "Talk-Show"},
-    {Genres::thriller, "Thriller"},
-    {Genres::war, "War"},
-    {Genres::western, "Western"}
+// pos in bitmask -> label
+inline std::vector<std::string> GenresNameList = {
+#define X(name, label) label,
+    GENRES_LIST
+#undef X
 };
 
-const std::map<std::string, unsigned int> stringToGenreMask = {
-    {"Action", Genres::action},
-    {"Adult", Genres::adult},
-    {"Adventure", Genres::adventure},
-    {"Animation", Genres::animation},
-    {"Biography", Genres::biography},
-    {"Comedy", Genres::comedy},
-    {"Crime", Genres::crime},
-    {"Documentary", Genres::documentary},
-    {"Drama", Genres::drama},
-    {"Family", Genres::family},
-    {"Fantasy", Genres::fantasy},
-    {"Game-Show", Genres::game_Show},
-    {"History", Genres::history},
-    {"Horror", Genres::horror},
-    {"Music", Genres::music},
-    {"Musical", Genres::musical},
-    {"Mystery", Genres::mystery},
-    {"News", Genres::news},
-    {"Reality-TV", Genres::reality_TV},
-    {"Romance", Genres::romance},
-    {"Sci-Fi", Genres::sci_Fi},
-    {"Short", Genres::_short},
-    {"Sport", Genres::sport},
-    {"Talk-Show", Genres::talk_Show},
-    {"Thriller", Genres::thriller},
-    {"War", Genres::war},
-    {"Western", Genres::western}
-};
-
-//Masks for each type
-namespace TitleTypes
-{
-    const unsigned short movie        = 1 << 0;   // 1
-    const unsigned short _short       = 1 << 1;   // 2
-    const unsigned short tvEpisode    = 1 << 2;   // 3
-    const unsigned short tvMiniSeries = 1 << 3;   // 4
-    const unsigned short tvMovie      = 1 << 4;   // 5
-    const unsigned short tvSeries     = 1 << 5;   // 6
-    const unsigned short tvShort      = 1 << 6;   // 7
-    const unsigned short tvSpecial    = 1 << 7;   // 8
-    const unsigned short video        = 1 << 8;   // 9
-    const unsigned short videoGame    = 1 << 9;   // 10
+/*
+    Generate function from GENRES_LIST to return bitmask of a genre from string
+*/
+inline unsigned int genreFromString(const std::string& s) {
+#define X(name, label) if (s == label) return Genres::name;
+    GENRES_LIST
+#undef X
+    return 0;
 }
 
-// Maps for TitleTypes
-const std::map<unsigned short, std::string> titleTypesMap = {
-    {TitleTypes::movie, "Movie"},
-    {TitleTypes::_short, "Short"},
-    {TitleTypes::tvEpisode, "TV Episode"},
-    {TitleTypes::tvMiniSeries, "TV Mini-Series"},
-    {TitleTypes::tvMovie, "TV Movie"},
-    {TitleTypes::tvSeries, "TV Series"},
-    {TitleTypes::tvShort, "TV Short"},
-    {TitleTypes::tvSpecial, "TV Special"},
-    {TitleTypes::video, "Video"},
-    {TitleTypes::videoGame, "Video Game"}
+//Movie Types
+/*
+    Define a list of all movie types
+*/
+#define TYPES_LIST          \
+    X(movie,        "Movie")          \
+    X(_short,       "Short")          \
+    X(tvEpisode,    "TV Episode")     \
+    X(tvMiniSeries, "TV Mini-Series") \
+    X(tvMovie,      "TV Movie")       \
+    X(tvSeries,     "TV Series")      \
+    X(tvShort,      "TV Short")       \
+    X(tvSpecial,    "TV Special")     \
+    X(video,        "Video")          \
+    X(videoGame,    "Video Game")
+
+/*
+    Generate namespace from TYPES_LIST
+*/
+// name -> bitmask
+enum { GENRES_LIST_SIZE = __COUNTER__ }; //Get __COUNTER__ value
+namespace TitleTypes {
+#define X(name, label) constexpr unsigned short name = 1u << (__COUNTER__ - GENRES_LIST_SIZE);
+    TYPES_LIST
+#undef X
+}
+
+// pos in bitmask -> label
+inline std::vector<std::string> TypesNameList = {
+#define X(name, label) label,
+    TYPES_LIST
+#undef X
 };
 
-const std::map<std::string, unsigned short> stringToTitleTypeMask = {
-    {"movie", TitleTypes::movie},
-    {"short", TitleTypes::_short},
-    {"tvEpisode", TitleTypes::tvEpisode},
-    {"tvMiniSeries", TitleTypes::tvMiniSeries},
-    {"tvMovie", TitleTypes::tvMovie},
-    {"tvSeries", TitleTypes::tvSeries},
-    {"tvShort", TitleTypes::tvShort},
-    {"tvSpecial", TitleTypes::tvSpecial},
-    {"video", TitleTypes::video},
-    {"videoGame", TitleTypes::videoGame}
-};
+/*
+    Generate function from TYPES_LIST to return bitmask of a type from string
+*/
+inline unsigned short typeFromString(const std::string& s) {
+#define X(name, label) if (s == label) return TitleTypes::name;
+    TYPES_LIST
+#undef X
+    return 0;
+}
