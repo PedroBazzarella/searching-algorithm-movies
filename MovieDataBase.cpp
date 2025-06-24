@@ -212,8 +212,7 @@ Movies *MovieDataBase::findMovieByID(int id)
     return nullptr;
 }
 
-const std::vector<size_t> &MovieDataBase::getGenreList(unsigned int genre_mask)
-{
+const std::vector<size_t> &MovieDataBase::getGenreList(unsigned int genre_mask){
     size_t whichGenre = getBitPosition(genre_mask);
 
     return genreIndex.at(whichGenre); // returns list of asked genre

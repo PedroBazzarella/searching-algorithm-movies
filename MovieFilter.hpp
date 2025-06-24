@@ -4,17 +4,23 @@
 #include <string>
 #include "Movies.hpp"
 
+struct Interval {int start; int end;};
+enum movieFilterType{RELEASE_YEAR, MOVIE_GENRE, MOVIE_TYPE, DURATION, YEAR_INTERVAL};
+
 class MovieFilter {
 private:
+    const MovieDataBase & database;
 
 public:
-    struct YearInterval {int start; int end;};
+    MovieFilter::MovieFilter(const MovieDataBase& database);
 
-    std::vector<unsigned int> movieTypeMask;
+    std::vector<movieFilterType> filterTypes;
+    std::vector<unsigned short> movieTypeMask;
     std::vector<unsigned int> movieGenreMask;
-    std::vector<int> duration;
-    std::vector<int> releaseYear;
-    std::vector<YearInterval> yearInterval;
+    std::vector<Interval> duration;
+    int releaseYear;
+    std::vector<Interval> yearInterval;
 
-    std::vector<Movies> Filter() const;
+    std::vector<Movies> Filter(std::vector<Movies> movies) const;
+    void addFilter(movieFilterType filter);
 };
