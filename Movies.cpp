@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-Movies::Movies(int id, unsigned short titleType_mask, std::string primaryTitle, std::string originalTitle, bool isAdult, int startYear, int endYear, int runtimeMinutes, unsigned int genres_mask){
+Movies::Movies(int id, unsigned short titleType_mask, std::string primaryTitle, std::string originalTitle, bool isAdult, unsigned short startYear, unsigned short endYear, int runtimeMinutes, unsigned int genres_mask){
     this->id = id;
     this->titleType_mask = titleType_mask;
     this->primaryTitle = primaryTitle;
@@ -25,9 +25,17 @@ unsigned short Movies::getTitleTypeMask(){
     return titleType_mask;
 }
 
-unsigned short Movies::getGenresMask(){
+unsigned int Movies::getGenresMask(){
     return genres_mask;
 }
+
+unsigned int Movies::getRuntimeMinutes(){
+    return runtimeMinutes;
+}
+
+unsigned short Movies::getStartYear(){
+    return startYear;
+};
 
 std::string Movies::getGenresAsString() const{
     std::string movieGenres = "";

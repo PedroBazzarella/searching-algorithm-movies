@@ -3,6 +3,10 @@
 #include <vector>
 #include <string>
 #include "Movies.hpp"
+#include "MovieDatabase.hpp"
+
+struct Interval {int start; int end;};
+enum movieFilterType{RELEASE_YEAR, MOVIE_GENRE, MOVIE_TYPE, DURATION, YEAR_INTERVAL};
 
 struct Interval {int start; int end;};
 enum movieFilterType{RELEASE_YEAR, MOVIE_GENRE, MOVIE_TYPE, DURATION, YEAR_INTERVAL};
@@ -12,15 +16,15 @@ private:
     const MovieDataBase & database;
 
 public:
-    MovieFilter::MovieFilter(const MovieDataBase& database);
+    MovieFilter(const MovieDataBase& database);
 
     std::vector<movieFilterType> filterTypes;
-    std::vector<unsigned short> movieTypeMask;
-    std::vector<unsigned int> movieGenreMask;
-    std::vector<Interval> duration;
+    unsigned short movieTypeMask;
+    unsigned int movieGenreMask;
+    Interval duration;
     int releaseYear;
-    std::vector<Interval> yearInterval;
+    Interval yearInterval;
 
-    std::vector<Movies> Filter(std::vector<Movies> movies) const;
+    std::vector<unsigned int> Filter(std::vector<Movies> movies);
     void addFilter(movieFilterType filter);
 };
