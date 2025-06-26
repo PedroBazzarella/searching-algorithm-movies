@@ -1,8 +1,19 @@
+#include "MovieDefinitions.hpp"
 #include "MovieFilter.hpp"
 #include "MovieDatabase.hpp"
+<<<<<<< HEAD
 #include <iostream>
 
 MovieFilter::MovieFilter(const MovieDataBase& database) : database(database) {}
+=======
+#include <sstream>
+#include <string>
+#include <iostream>
+
+MovieFilter::MovieFilter(const MovieDataBase& database) : database(database) {
+    movieGenreMask = 0;
+}
+>>>>>>> pedro
 
 /* 
     Add filterType to filter in correct priority
@@ -141,4 +152,19 @@ std::vector<unsigned int> MovieFilter::Filter(){
     }
 
     return result;
+<<<<<<< HEAD
+=======
+}
+
+std::string MovieFilter::toString(){
+    std::ostringstream string;
+
+    string << "Filtro: " << movieTypeMask << " " << movieGenreMask << " " << duration.start << " " << duration.end << " " << releaseYear << " ";
+
+    for(movieFilterType filter : filterTypes){
+        string << filter << " ";
+    }
+
+    return string.str();
+>>>>>>> pedro
 }

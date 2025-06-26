@@ -24,4 +24,9 @@ public:
 
     std::vector<unsigned int> Filter();
     void addFilter(movieFilterType filter);
+<<<<<<< HEAD
+=======
+
+    std::string toString();
+>>>>>>> pedro
 };

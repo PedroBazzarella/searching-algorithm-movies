@@ -230,7 +230,11 @@ const Movies* MovieDataBase::findMovieByID(int id) const{
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const std::vector<size_t> &MovieDataBase::getGenreList(unsigned int genre_mask){
+=======
+const std::vector<size_t> &MovieDataBase::getGenreList(unsigned int genre_mask) const{
+>>>>>>> pedro
 =======
 const std::vector<size_t> &MovieDataBase::getGenreList(unsigned int genre_mask) const{
 >>>>>>> pedro
@@ -256,7 +260,11 @@ const std::vector <size_t> & MovieDataBase::getTitleTypeList(unsigned short titl
 
 const int MovieDataBase::getTitleTypeListSize(unsigned short titleType_mask) const{
 <<<<<<< HEAD
+<<<<<<< HEAD
     size_t whichGenre = getTitleTypeListSize(titleType_mask);
+=======
+    size_t whichGenre = getBitPosition(titleType_mask);
+>>>>>>> pedro
 =======
     size_t whichGenre = getBitPosition(titleType_mask);
 >>>>>>> pedro
@@ -274,7 +282,11 @@ const std::vector <std::vector<unsigned int>> & MovieDataBase::getStartYearIndex
 
 const int MovieDataBase::getStartYearPosition(unsigned short year) const{
 <<<<<<< HEAD
+<<<<<<< HEAD
     return year+500-2025;
+=======
+    return (year-2025+499 < 0) ? 0 : year-2025+499;
+>>>>>>> pedro
 =======
     return (year-2025+499 < 0) ? 0 : year-2025+499;
 >>>>>>> pedro
