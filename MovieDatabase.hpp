@@ -8,6 +8,7 @@ class MovieDataBase{
 private:
     std::vector <Movies> allMovies; //stores all movies
     std::vector <size_t> movieIndexTable; // stores index of a movie in the allMovies vector based on a hash formula
+    bool debug_mode;
 
     //Sublists 
     std::vector <std::vector <size_t>> genreIndex; //list of genre vectors
@@ -25,10 +26,10 @@ private:
     Movies createMovie(std::string id, std::string titleType_mask, std::string primaryTitle, std::string originalTitle, std::string isAdult, std::string startYear, std::string endYear, std::string runtimeMinutes, std::string genres_mask);
     
 public:
-    MovieDataBase();
+    MovieDataBase(bool debug_mode);
 
     void loadMoviesFromTXT(const std::string& filename);
-    Movies * findMovieByID(int id);
+    const Movies * findMovieByID(int id) const;
     const std::vector <size_t> & getGenreList(unsigned int genre_mask) const;
     const int getGenreListSize(unsigned int genre_mask) const;
     const std::vector <size_t> & getTitleTypeList(unsigned short titleType_mask) const;

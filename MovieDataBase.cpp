@@ -8,8 +8,10 @@
 #include <chrono>
 #include <cmath>
 
-MovieDataBase::MovieDataBase()
+MovieDataBase::MovieDataBase(bool debug_mode)
 {
+    this->debug_mode = debug_mode;
+
     // initializes hash table with predefined size and fills all slots with null
     movieIndexTable.resize(IndexConfig::INDEX_SIZE, IndexConfig::NULL_INDEX);
 
@@ -24,10 +26,10 @@ MovieDataBase::MovieDataBase()
     for(int i : titleTypeIndexSize) i = 0;
 
     // static vector for movie ids by duration time
-    durationIndex.resize(500);
+    durationIndex.resize(52000);
 
     // static vector for movie ids by release year
-    startYearIndex.resize(500);
+    startYearIndex.resize(2030);
 }
 
 Movies MovieDataBase::createMovie(std::string id_string, std::string titleType_string, std::string primaryTitle_string, std::string originalTitle_string, std::string isAdult_string, std::string startYear_string, std::string endYear_string, std::string runtimeMinutes_string, std::string genres_string)
@@ -43,13 +45,13 @@ Movies MovieDataBase::createMovie(std::string id_string, std::string titleType_s
     bool isAdult = std::stoi(isAdult_string);
 
     // convert startYear_string to int if the value is valid, else default to 0
-    int startYear = (startYear_string == "\\N") ? 0 : std::stoi(startYear_string);
+    unsigned short startYear = (startYear_string == "\\N") ? 0 : std::stoi(startYear_string);
 
     // convert endYear_string to int if the value is valid, else default to 0
-    int endYear = (endYear_string == "\\N") ? 0 : std::stoi(endYear_string);
+    unsigned short endYear = (endYear_string == "\\N") ? 0 : std::stoi(endYear_string);
 
     // convert runtimeMinutes_string to int if the value is valid, else default to 0
-    int runtimeMinutes = (runtimeMinutes_string == "\\N") ? 0 : std::stoi(runtimeMinutes_string);
+    unsigned int runtimeMinutes = (runtimeMinutes_string == "\\N") ? 0 : std::stoi(runtimeMinutes_string);
 
     // END TYPE CONVERSIONS ------------------------------------
 
@@ -87,6 +89,7 @@ void MovieDataBase::loadMoviesFromTXT(const std::string &filename)
 
     while (std::getline(inputFile, line))
     {
+        if(line.empty()) continue;
         std::stringstream stringLine(line); // creates stream from line
         std::string field;
 
@@ -145,7 +148,9 @@ void MovieDataBase::loadMoviesFromTXT(const std::string &filename)
 
         movieIndexTable[hashIndex] = storageIndexInAllMovies;
 
-        std::cout << movie.toString() << std::endl;
+        if(debug_mode){
+            std::cout << movie.toString() << std::endl;
+        }
         /*
         LINHA
         DE
@@ -156,12 +161,10 @@ void MovieDataBase::loadMoviesFromTXT(const std::string &filename)
         // END HASH -----------------------------------------
 
         // SUBLISTS -----------------------------------------
-        unsigned short tittleTypeMask = movie.getTitleTypeMask();
-
-        if (tittleTypeMask > 0)
+        unsigned short titleTypeMask = movie.getTitleTypeMask();
+        if (titleTypeMask > 0)
         {
-            size_t whichTypeIndex = getBitPosition(tittleTypeMask);
-    
+            size_t whichTypeIndex = getBitPosition(titleTypeMask);
             if (whichTypeIndex < titleTypeIndex.size())
             {
                 titleTypeIndex[whichTypeIndex].push_back(movie.getID()); // puts the movie id in the list of its tittleType
@@ -188,7 +191,8 @@ void MovieDataBase::loadMoviesFromTXT(const std::string &filename)
         durationIndex[movie.getRuntimeMinutes()].push_back(movie.getID());
 
         //startYear list
-        startYearIndex[getStartYearPosition(movie.getStartYear())].push_back(movie.getID());
+        //std::cout << getStartYearPosition(movie.getStartYear()) << std::endl;
+        startYearIndex[movie.getStartYear()].push_back(movie.getID());
 
         // END SUBLISTS -------------------------------------
     }
@@ -206,7 +210,7 @@ void MovieDataBase::loadMoviesFromTXT(const std::string &filename)
     std::cout << "-----------------------------------------------" << std::endl;
 }
 
-Movies *MovieDataBase::findMovieByID(int id){
+const Movies* MovieDataBase::findMovieByID(int id) const{
     size_t hashIndex = (id - IndexConfig::ID_OFFSET) / 2;
 
     if (hashIndex > movieIndexTable.size() - 1)
@@ -225,7 +229,11 @@ Movies *MovieDataBase::findMovieByID(int id){
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const std::vector<size_t> &MovieDataBase::getGenreList(unsigned int genre_mask){
+=======
+const std::vector<size_t> &MovieDataBase::getGenreList(unsigned int genre_mask) const{
+>>>>>>> pedro
 =======
 const std::vector<size_t> &MovieDataBase::getGenreList(unsigned int genre_mask) const{
 >>>>>>> pedro
@@ -247,7 +255,11 @@ const std::vector <size_t> & MovieDataBase::getTitleTypeList(unsigned short titl
 }
 
 const int MovieDataBase::getTitleTypeListSize(unsigned short titleType_mask) const{
+<<<<<<< HEAD
     size_t whichGenre = getTitleTypeListSize(titleType_mask);
+=======
+    size_t whichGenre = getBitPosition(titleType_mask);
+>>>>>>> pedro
 
     return titleTypeIndexSize.at(whichGenre); // returns size of asked genre
 }
@@ -261,7 +273,11 @@ const std::vector <std::vector<unsigned int>> & MovieDataBase::getStartYearIndex
 }
 
 const int MovieDataBase::getStartYearPosition(unsigned short year) const{
+<<<<<<< HEAD
     return year+500-2025;
+=======
+    return (year-2025+499 < 0) ? 0 : year-2025+499;
+>>>>>>> pedro
 }
 
 

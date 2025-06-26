@@ -21,10 +21,11 @@ public:
     Movies(int id, unsigned short titleType_mask, std::string primaryTitle, std::string originalTitle, bool isAdult, unsigned short startYear, unsigned short endYear, int runtimeMinutes, unsigned int genres_mask);
     
     int getID ();
-    unsigned short getTitleTypeMask();
-    unsigned int getGenresMask();
-    unsigned int getRuntimeMinutes();
-    unsigned short getStartYear();
+    unsigned short getTitleTypeMask() const;
+    unsigned int getGenresMask() const;
+    unsigned int getRuntimeMinutes() const;
+    unsigned short getStartYear() const;
+    unsigned short getEndYear() const;
 
     std::string toString() const;
 };

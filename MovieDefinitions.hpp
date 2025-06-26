@@ -78,22 +78,22 @@ inline unsigned int genreFromString(const std::string& s) {
     Define a list of all movie types
 */
 #define TYPES_LIST          \
-    X(movie,        "Movie")          \
-    X(_short,       "Short")          \
-    X(tvEpisode,    "TV Episode")     \
-    X(tvMiniSeries, "TV Mini-Series") \
-    X(tvMovie,      "TV Movie")       \
-    X(tvSeries,     "TV Series")      \
-    X(tvShort,      "TV Short")       \
-    X(tvSpecial,    "TV Special")     \
-    X(video,        "Video")          \
-    X(videoGame,    "Video Game")
+    X(movie,        "movie")          \
+    X(_short,       "short")          \
+    X(tvEpisode,    "tvEpisode")     \
+    X(tvMiniSeries, "tvMiniSeries") \
+    X(tvMovie,      "tvMovie")       \
+    X(tvSeries,     "tvSeries")      \
+    X(tvShort,      "tvShort")       \
+    X(tvSpecial,    "tvSpecial")     \
+    X(video,        "video")          \
+    X(videoGame,    "videoGame")
 
 /*
     Generate namespace from TYPES_LIST
 */
 // name -> bitmask
-enum { GENRES_LIST_SIZE = __COUNTER__ }; //Get __COUNTER__ value
+enum { GENRES_LIST_SIZE = __COUNTER__ + 1}; //Get __COUNTER__ value
 namespace TitleTypes {
 #define X(name, label) constexpr unsigned short name = 1u << (__COUNTER__ - GENRES_LIST_SIZE);
     TYPES_LIST

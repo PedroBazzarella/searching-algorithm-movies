@@ -21,20 +21,24 @@ int Movies::getID(){
     return id;
 }
 
-unsigned short Movies::getTitleTypeMask(){
+unsigned short Movies::getTitleTypeMask() const{
     return titleType_mask;
 }
 
-unsigned int Movies::getGenresMask(){
+unsigned int Movies::getGenresMask() const{
     return genres_mask;
 }
 
-unsigned int Movies::getRuntimeMinutes(){
+unsigned int Movies::getRuntimeMinutes() const{
     return runtimeMinutes;
 }
 
-unsigned short Movies::getStartYear(){
+unsigned short Movies::getStartYear() const{
     return startYear;
+};
+
+unsigned short Movies::getEndYear() const{
+    return endYear;
 };
 
 std::string Movies::getGenresAsString() const{
@@ -52,8 +56,8 @@ std::string Movies::getGenresAsString() const{
 
 
 std::string Movies::getTitleTypeAsString() const{
-    for(int i = 0; i < 31; ++i){
-        if((1 << i) & genres_mask != 0){
+    for(unsigned short i = 0; i < 15; ++i){
+        if((1 << i & titleType_mask) != 0){
             return TypesNameList[i];
         }
     }
@@ -65,7 +69,7 @@ std::string Movies::getTitleTypeAsString() const{
 std::string Movies::toString() const{
     std::ostringstream movieData;
 
-    movieData << "tt" << id << " " << getTitleTypeAsString() << " " << originalTitle << " " << startYear << " "<< endYear << " " << getGenresAsString();
+    movieData << "tt" << id << " " << getTitleTypeAsString() << " " << originalTitle << " " << startYear << " " << endYear << " " << runtimeMinutes << " " << getGenresAsString();
 
     return movieData.str();
 }
